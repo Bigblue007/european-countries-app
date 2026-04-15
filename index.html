@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>European Countries - Interactive Table</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>European Countries</h1>
+            <p class="subtitle">Click on any country to view details</p>
+        </header>
+
+        <div class="table-wrapper">
+            <table id="countriesTable" class="countries-table">
+                <thead>
+                    <tr>
+                        <th>Country</th>
+                        <th>Region</th>
+                        <th>Capital</th>
+                        <th>Population</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal Popup -->
+    <div id="modal" class="modal">
+        <div class="modal-overlay" id="modalOverlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="closeBtn">&times;</button>
+            <div class="modal-body">
+                <div class="modal-flag-container">
+                    <img id="modalFlag" class="modal-flag" alt="Country flag" />
+                </div>
+                <h2 id="modalCountryName"></h2>
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Capital:</span>
+                        <span id="modalCapital" class="info-value"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Region:</span>
+                        <span id="modalRegion" class="info-value"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Population:</span>
+                        <span id="modalPopulation" class="info-value"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Area:</span>
+                        <span id="modalArea" class="info-value"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Language:</span>
+                        <span id="modalLanguage" class="info-value"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Currency:</span>
+                        <span id="modalCurrency" class="info-value"></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">EU Member:</span>
+                        <span id="modalEU" class="info-value eu-badge"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
