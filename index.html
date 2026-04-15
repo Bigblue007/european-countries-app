@@ -11,18 +11,21 @@
 <body>
     <div class="container">
         <header>
-            <h1>European Countries</h1>
-            <p class="subtitle">Click on any country to view details</p>
+            <div class="header-top">
+                <h1 id="pageTitle">European Countries</h1>
+                <button id="langBtn" class="language-btn">Czech</button>
+            </div>
+            <p class="subtitle" id="pageSubtitle">Click on any country to view details</p>
         </header>
 
         <div class="table-wrapper">
             <table id="countriesTable" class="countries-table">
                 <thead>
                     <tr>
-                        <th>Country</th>
-                        <th>Region</th>
-                        <th>Capital</th>
-                        <th>Population</th>
+                        <th data-i18n="tableHeaders.country">Country</th>
+                        <th data-i18n="tableHeaders.region">Region</th>
+                        <th data-i18n="tableHeaders.capital">Capital</th>
+                        <th data-i18n="tableHeaders.population">Population</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody">
@@ -44,31 +47,31 @@
                 <h2 id="modalCountryName"></h2>
                 <div class="info-grid">
                     <div class="info-item">
-                        <span class="info-label">Capital:</span>
+                        <span class="info-label" data-i18n="modal.capital">Capital:</span>
                         <span id="modalCapital" class="info-value"></span>
                     </div>
                     <div class="info-item">
-                        <span class="info-label">Region:</span>
+                        <span class="info-label" data-i18n="modal.region">Region:</span>
                         <span id="modalRegion" class="info-value"></span>
                     </div>
                     <div class="info-item">
-                        <span class="info-label">Population:</span>
+                        <span class="info-label" data-i18n="modal.population">Population:</span>
                         <span id="modalPopulation" class="info-value"></span>
                     </div>
                     <div class="info-item">
-                        <span class="info-label">Area:</span>
+                        <span class="info-label" data-i18n="modal.area">Area:</span>
                         <span id="modalArea" class="info-value"></span>
                     </div>
                     <div class="info-item">
-                        <span class="info-label">Language:</span>
+                        <span class="info-label" data-i18n="modal.language">Language:</span>
                         <span id="modalLanguage" class="info-value"></span>
                     </div>
                     <div class="info-item">
-                        <span class="info-label">Currency:</span>
+                        <span class="info-label" data-i18n="modal.currency">Currency:</span>
                         <span id="modalCurrency" class="info-value"></span>
                     </div>
                     <div class="info-item">
-                        <span class="info-label">EU Member:</span>
+                        <span class="info-label" data-i18n="modal.euMember">EU Member:</span>
                         <span id="modalEU" class="info-value eu-badge"></span>
                     </div>
                 </div>
@@ -76,6 +79,7 @@
         </div>
     </div>
 
+    <script src="i18n.js"></script>
     <script src="data.js"></script>
     <script src="script.js"></script>
 </body>

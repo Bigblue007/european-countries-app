@@ -1,8 +1,56 @@
+// Language Management
+let currentLanguage = localStorage.getItem('language') || 'en';
+
+function getTranslation(key) {
+    const keys = key.split('.');
+    let value = i18n[currentLanguage];
+    for (let k of keys) {
+        value = value[k];
+    }
+    return value;
+}
+
+function updatePageLanguage() {
+    // Update title and subtitle
+    document.getElementById('pageTitle').textContent = getTranslation('title');
+    document.getElementById('pageSubtitle').textContent = getTranslation('subtitle');
+    
+    // Update language button
+    document.getElementById('langBtn').textContent = getTranslation('languageSwitch');
+    
+    // Update table headers
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        const text = getTranslation(key);
+        el.textContent = text + (el.classList.contains('info-label') ? ':' : '');
+    });
+    
+    // Update modal if open
+    updateModalLabels();
+}
+
+function switchLanguage() {
+    currentLanguage = currentLanguage === 'en' ? 'cs' : 'en';
+    localStorage.setItem('language', currentLanguage);
+    updatePageLanguage();
+}
+
+function updateModalLabels() {
+    // Update EU badge text if modal is showing
+    const modalEU = document.getElementById('modalEU');
+    if (modalEU && modalEU.textContent) {
+        const isEUMember = modalEU.classList.contains('yes');
+        const euText = isEUMember ? getTranslation('eu.yes') : getTranslation('eu.no');
+        modalEU.textContent = euText;
+    }
+}
+
 // DOM Elements
 const tableBody = document.getElementById('tableBody');
 const modal = document.getElementById('modal');
 const closeBtn = document.getElementById('closeBtn');
 const modalOverlay = document.getElementById('modalOverlay');
+const langBtn = document.getElementById('langBtn');
 
 // Modal fields
 const modalFlag = document.getElementById('modalFlag');
@@ -50,9 +98,10 @@ function openModal(country) {
     modalCurrency.textContent = country.currency;
     
     // EU membership badge
-    const euStatus = country.euMember ? 'Yes' : 'No';
-    const euClass = country.euMember ? 'yes' : 'no';
-    modalEU.textContent = euStatus;
+    const euStatus = country.euMember;
+    const euText = euStatus ? getTranslation('eu.yes') : getTranslation('eu.no');
+    const euClass = euStatus ? 'yes' : 'no';
+    modalEU.textContent = euText;
     modalEU.className = `info-value eu-badge ${euClass}`;
     
     modal.classList.add('show');
@@ -68,6 +117,7 @@ function closeModal() {
 // Event listeners
 closeBtn.addEventListener('click', closeModal);
 modalOverlay.addEventListener('click', closeModal);
+langBtn.addEventListener('click', switchLanguage);
 
 // Close modal on Escape key
 document.addEventListener('keydown', (event) => {
@@ -76,5 +126,8 @@ document.addEventListener('keydown', (event) => {
     }
 });
 
-// Initialize table on page load
-document.addEventListener('DOMContentLoaded', populateTable);
+// Initialize page on load
+document.addEventListener('DOMContentLoaded', () => {
+    populateTable();
+    updatePageLanguage();
+});
