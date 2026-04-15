@@ -1,5 +1,6 @@
 // Language Management
 let currentLanguage = localStorage.getItem('language') || 'en';
+let currentOpenCountry = null; // Track which country's modal is open
 
 function getTranslation(key) {
     const keys = key.split('.');
@@ -25,6 +26,9 @@ function updatePageLanguage() {
         el.textContent = text + (el.classList.contains('info-label') ? ':' : '');
     });
     
+    // Repopulate table with new language
+    populateTable();
+    
     // Update modal if open
     updateModalLabels();
 }
@@ -36,11 +40,22 @@ function switchLanguage() {
 }
 
 function updateModalLabels() {
-    // Update EU badge text if modal is showing
-    const modalEU = document.getElementById('modalEU');
-    if (modalEU && modalEU.textContent) {
-        const isEUMember = modalEU.classList.contains('yes');
-        const euText = isEUMember ? getTranslation('eu.yes') : getTranslation('eu.no');
+    // If a modal is open, update all its content with new language
+    if (currentOpenCountry && modal.classList.contains('show')) {
+        const country = currentOpenCountry;
+        const countryName = currentLanguage === 'cs' ? country.nameCz : country.name;
+        const capitalName = currentLanguage === 'cs' ? country.capitalCz : country.capital;
+        const regionName = getRegionName(country);
+        const languageName = currentLanguage === 'cs' ? country.languageCz : country.language;
+        
+        modalCountryName.textContent = countryName;
+        modalCapital.textContent = capitalName;
+        modalRegion.textContent = regionName;
+        modalLanguage.textContent = languageName;
+        
+        // Update EU badge
+        const euStatus = country.euMember;
+        const euText = euStatus ? getTranslation('eu.yes') : getTranslation('eu.no');
         modalEU.textContent = euText;
     }
 }
@@ -74,10 +89,12 @@ function populateTable() {
     
     countries.forEach(country => {
         const row = document.createElement('tr');
+        const countryName = currentLanguage === 'cs' ? country.nameCz : country.name;
+        const capital = currentLanguage === 'cs' ? country.capitalCz : country.capital;
         row.innerHTML = `
-            <td><img src="${getFlagUrl(country.code, 'w80')}" class="flag-icon" alt="${country.name} flag" />${country.name}</td>
-            <td>${country.region}</td>
-            <td>${country.capital}</td>
+            <td><img src="${getFlagUrl(country.code, 'w80')}" class="flag-icon" alt="${country.name} flag" />${countryName}</td>
+            <td>${getRegionName(country)}</td>
+            <td>${capital}</td>
             <td>${country.population}</td>
         `;
         row.addEventListener('click', () => openModal(country));
@@ -85,16 +102,30 @@ function populateTable() {
     });
 }
 
+// Get region name in current language
+function getRegionName(country) {
+    if (currentLanguage === 'cs') {
+        return country.regionCz;
+    }
+    return country.region;
+}
+
 // Open modal with country details
 function openModal(country) {
+    currentOpenCountry = country; // Remember which country is open
+    const countryName = currentLanguage === 'cs' ? country.nameCz : country.name;
+    const capitalName = currentLanguage === 'cs' ? country.capitalCz : country.capital;
+    const regionName = getRegionName(country);
+    const languageName = currentLanguage === 'cs' ? country.languageCz : country.language;
+    
     modalFlag.src = getFlagUrl(country.code, 'w320');
     modalFlag.alt = `${country.name} flag`;
-    modalCountryName.textContent = country.name;
-    modalCapital.textContent = country.capital;
-    modalRegion.textContent = country.region;
+    modalCountryName.textContent = countryName;
+    modalCapital.textContent = capitalName;
+    modalRegion.textContent = regionName;
     modalPopulation.textContent = country.population;
     modalArea.textContent = country.area;
-    modalLanguage.textContent = country.language;
+    modalLanguage.textContent = languageName;
     modalCurrency.textContent = country.currency;
     
     // EU membership badge
@@ -112,6 +143,7 @@ function openModal(country) {
 function closeModal() {
     modal.classList.remove('show');
     document.body.style.overflow = 'auto'; // Re-enable scrolling
+    currentOpenCountry = null; // Clear the tracked country
 }
 
 // Event listeners
