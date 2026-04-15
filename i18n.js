@@ -21,7 +21,7 @@ const i18n = {
       yes: "Yes",
       no: "No"
     },
-    languageSwitch: "🇨🇿 na Česky"
+    languageSwitch: "🇨🇿 Česky"
   },
   cs: {
     title: "Evropské země",
@@ -45,6 +45,6 @@ const i18n = {
       yes: "Ano",
       no: "Ne"
     },
-    languageSwitch: "🇬🇧 In English"
+    languageSwitch: "🇬🇧 English"
   }
 };
